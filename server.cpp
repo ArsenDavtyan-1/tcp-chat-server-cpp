@@ -16,6 +16,7 @@ int main()
     struct sockaddr_in client_addr;
     socklen_t          client_len = sizeof(client_addr);
     char               client_ip[INET_ADDRSTRLEN];
+    char               buffer[1024] = {0};
 
     if((server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
         perror("Failed to create server socket");
@@ -40,10 +41,19 @@ int main()
         exit(EXIT_FAILURE);
     }
     inet_ntop(AF_INET, &client_addr.sin_addr, client_ip, sizeof(client_ip));
-    printf("Print clinet ip: %s, port: %d", client_ip, ntohs(client_addr.sin_port));
+    printf("Print clinet ip: %s, port: %d\n", client_ip, ntohs(client_addr.sin_port));
+
+    if(recv(client_fd, buffer, sizeof(buffer), 0) < 0){
+        perror("Failed to recv client's message");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("%s\n", buffer);
 
     close(server_fd);
     close(client_fd);
+
+    return 0;
 }
 
 
