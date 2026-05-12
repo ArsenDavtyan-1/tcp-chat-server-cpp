@@ -25,12 +25,11 @@ $(CLIENT) : $(CLIENT_SRC)
 
 # Clean generated binaries
 clean:
-	rm -f $(SERVER) $(CLIENT)
+	@rm -f $(SERVER) $(CLIENT)
 
 # Run Server First Than Client
 run: $(SERVER) $(CLIENT)
-	./$(SERVER) &		# Run Server In Background
-	SERVER_PID=$$!		# Save Server Run PID
-	sleep 1				# Wait 1 Second To Start Server
-	./$(CLIENT)			# Run Client
-	kill $$SERVER_PID	# Kill Server After Client Is Done
+	./$(SERVER) & SERVER_PID=$$!; \
+	sleep 1; \
+	./$(CLIENT); \
+	kill $$SERVER_PID
