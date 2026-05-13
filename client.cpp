@@ -1,8 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <iostream>
+#include <cstdlib>
 #include <sys/socket.h>
 #include <arpa/inet.h>
-#include <string.h>
+#include <string>
 #include <unistd.h>
 
 #define PORT 8080
@@ -11,31 +11,46 @@ int main()
 {
     int                 client_fd;
     struct sockaddr_in  server_addr;
-    const char*         message = "Hello from client";
+    std::string         message = "Hello from client";
     
-    if((client_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
-        perror("Failed to create client socket in client.cpp");
+    try{
+        if((client_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
+            throw std::runtime_error("Failed to create client socket");
+        }
+    }
+    catch(const std::exception& e){
+        std::cerr << e.what() << '\n';
         exit(EXIT_FAILURE);
     }
 
     server_addr.sin_family  = AF_INET;
     server_addr.sin_port    = htons(PORT);
-    if(inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr) < 0){
-        perror("Failed to connect set server_addr.sin_addr");
+    try{
+        if(inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr) < 0){
+            throw std::runtime_error("Failed to connect set server_addr.sin_addr");
+        }
+    }
+    catch(const std::exception& e){
+        std::cerr << e.what() << '\n';
         exit(EXIT_FAILURE);
     }
     
 
-    if(connect(client_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0){
-        perror("Failed to connect client socket with server socket");
+    try{
+        if(connect(client_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0){
+            throw std::runtime_error("Failed to connect client socket with server socket");
+        }
+        if(send(client_fd, &message, message.length(), 0) < 0){
+            throw std::runtime_error("Failed to send client's message");
+        }
+        if(close(client_fd) < 0){
+            throw std::runtime_error("Failed to close client socket on sender side");
+        }
+    }
+    catch(const std::exception& e){
+        std::cerr << e.what() << '\n';
         exit(EXIT_FAILURE);
     }
 
-    if(send(client_fd, message, strlen(message), 0) < 0){
-        perror("Failed to send client's message");
-        exit(EXIT_FAILURE);
-    }
-
-    close(client_fd);
     return 0;
 }
