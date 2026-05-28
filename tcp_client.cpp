@@ -26,3 +26,10 @@ void TCPClientSocket::setMessage(std::string message){
 const std::string& TCPClientSocket::getMessage() const{
     return m_message;
 }
+
+void TCPClientSocket::setSocketAddr(){
+    m_addr.sin_family = AF_INET;
+    m_addr.sin_port   = htons(PORT);
+
+    return;
+}

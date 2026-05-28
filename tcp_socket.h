@@ -2,11 +2,13 @@
 #ifndef TCP_SOCKET_H
 #define TCP_SOCKET_H
 
+#include <iostream>
 #include <stdexcept>
 #include <string>
 #include "sys/socket.h" // for socket()
 #include "unistd.h"     // for socket close()
 #include "netinet/in.h" // for sockaddr_in
+#include "arpa/inet.h"  // for inet_ntop()
 
 #define PORT 8080
 

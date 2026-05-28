@@ -11,10 +11,11 @@ public:
     void                connect(const sockaddr_in& other_addr);
     void                setMessage(std::string message);
     const std::string&  getMessage() const;
+    void                setSocketAddr() override;;
 
 private:
     std::string m_message;
-}
+};
 
 
 

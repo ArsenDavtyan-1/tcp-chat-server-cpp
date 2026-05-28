@@ -38,3 +38,13 @@ void TCPSocket::receive(int remote_socket_fd){
         throw std::runtime_error("Failed to receive data");
     }
 }
+
+void TCPSocket::printSocket(){
+    char socket_ip[INET_ADDRSTRLEN];
+
+    inet_ntop(AF_INET, &m_addr.sin_addr, socket_ip, sizeof(socket_ip));
+
+    std::cout << "Socket ip: " << socket_ip << "\nSocket port: " << ntohs(m_addr.sin_port) << "\n";
+
+    return;
+}
