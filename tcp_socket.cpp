@@ -25,6 +25,10 @@ void TCPSocket::setSocketAddr(){
     m_addr.sin_addr.s_addr  = INADDR_ANY;
 }
 
+const sockaddr_in& TCPSocket::getSocketAddr(){
+    return m_addr;
+}
+
 void TCPSocket::bufferResize(size_t new_size){
     m_buffer.resize(new_size, '\0');
 }

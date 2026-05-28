@@ -13,13 +13,14 @@
 class TCPSocket
 {
 public:
-    TCPSocket();
-    virtual ~TCPSocket() noexcept;
-    int     getSocketFd();
-    void    setSocketAddr();
-    void    bufferResize(size_t new_size);
-    void    receive(int remote_socket_fd);
-    void    printSocket();
+                                TCPSocket();
+    virtual                     ~TCPSocket() noexcept;
+    int                         getSocketFd();
+    virtual void                setSocketAddr();
+    virtual const sockaddr_in&  getSocketAddr();
+    void                        bufferResize(size_t new_size);
+    void                        receive(int remote_socket_fd);
+    void                        printSocket();
 
 protected:
     int         m_socket_fd;
